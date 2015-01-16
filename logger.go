@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -88,16 +90,27 @@ func SetTimeFormat(format string) {
 }
 
 func SetLogFileLocation(fileLocation string) {
+
+	// Try to create log directory
+	logFilePath, _ := filepath.Abs(fileLocation)
+	err := os.MkdirAll(path.Dir(logFilePath), 0755)
+
+	if err != nil {
+		E("Cannot create log directory:", err)
+		os.Exit(-1)
+	}
+
+	f, err := os.OpenFile(fileLocation, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		E("Error opening log file:", err)
+		os.Exit(-1)
+	}
+
 	// Close previous log file
 	if logFile != os.Stderr {
 		logFile.Close()
 	}
 
-	f, err := os.OpenFile(fileLocation, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		E("Error opening log file: %v", err)
-		panic(err)
-	}
 	logFile = f
 }
 

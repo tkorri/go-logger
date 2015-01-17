@@ -106,6 +106,8 @@ func SetLogFileLocation(fileLocation string) {
 		os.Exit(-1)
 	}
 
+	log.Println("Redirecting logs to:", logFilePath)
+
 	// Close previous log file
 	if logFile != os.Stderr {
 		logFile.Close()

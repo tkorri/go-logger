@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+// Logger call depth
+const callDepth = 2
+
 var (
 	VERBOSE = &LogLevel{tag: "VERBOSE", ordinal: 1}
 	DEBUG   = &LogLevel{tag: "DEBUG  ", ordinal: 2}
@@ -118,24 +121,24 @@ func SetLogFileLocation(fileLocation string) {
 
 func V(v ...interface{}) {
 	if currentLevel.ordinal <= VERBOSE.ordinal {
-		vLog.Output(3, fmt.Sprintln(v...))
+		vLog.Output(callDepth, fmt.Sprintln(v...))
 	}
 }
 
 func D(v ...interface{}) {
 	if currentLevel.ordinal <= DEBUG.ordinal {
-		dLog.Output(3, fmt.Sprintln(v...))
+		dLog.Output(callDepth, fmt.Sprintln(v...))
 	}
 }
 
 func I(v ...interface{}) {
 	if currentLevel.ordinal <= INFO.ordinal {
-		iLog.Output(3, fmt.Sprintln(v...))
+		iLog.Output(callDepth, fmt.Sprintln(v...))
 	}
 }
 
 func E(v ...interface{}) {
 	if currentLevel.ordinal <= ERROR.ordinal {
-		eLog.Output(3, fmt.Sprintln(v...))
+		eLog.Output(callDepth, fmt.Sprintln(v...))
 	}
 }
